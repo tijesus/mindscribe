@@ -1,0 +1,135 @@
+/* Blog Page Styles */
+.blog-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* Needed for positioning the button and search bar */
+}
+
+/* Top section for search and create post button */
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Search Bar Styling */
+.search-bar {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-width: 600px;
+  margin-right: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Create Post Button Styling */
+.create-post-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-post-button a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.create-post-button:hover {
+  background-color: #0056b3;
+}
+
+/* Post List and Card Styles */
+.posts-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive 3-column layout */
+  gap: 20px;
+}
+
+.post-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+}
+
+.post-content {
+  padding: 10px;
+}
+
+.post-meta {
+  font-size: 14px;
+  color: #666;
+  display: inline-block;
+  justify-content: space-between;
+}
+.post-meta .post-timestamp {
+  margin-left: 65px;
+  margin-top: -12px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+}
+
+.author-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.post-actions {
+  margin-top: 10px;
+}
+
+.read-more-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.read-more-button:hover {
+  background-color: #0056b3;
+}
+
+/* Styles for "No posts found" message */
+p {
+  color: #666;
+  font-size: 16px;
+  margin-top: 20px;
+}

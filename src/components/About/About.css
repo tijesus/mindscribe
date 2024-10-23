@@ -1,0 +1,190 @@
+/* Container for the About page */
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    position: relative;
+    height: 400px;
+    background-image: url('../../Assets/hero.jpg'); /* You can use a local image or URL */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adds a dark overlay for better text visibility */
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-content p {
+    font-size: 1.25rem;
+    color: #f0f0f0;
+  }
+  
+  /* Mission Section */
+  .mission-section {
+    background-color: #f9f9f9;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .mission-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .mission-section p {
+    font-size: 1.1rem;
+    color: #666;
+  }
+  
+  /* What We Do Section */
+  .what-we-do-section {
+    margin-bottom: 2.5rem;
+  }
+  
+  .what-we-do-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .what-we-do-section p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .features-list {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .feature-item {
+    flex: 1;
+    background-color: #9ccdfc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .feature-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #202020;
+  }
+  
+  .feature-item p {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /* Team Section */
+  .team-section {
+    background-color: #fff;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .team-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .team-members {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .team-member {
+    text-align: center;
+    flex: 1;
+  }
+  
+  .team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+  
+  .team-member h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .team-member p {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /* Call to Action Section */
+  .call-to-action-section {
+    text-align: center;
+    padding: 2rem;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 2.5rem;
+  }
+  
+  .call-to-action-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .call-to-action-section p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: #f0f0f0;
+  }
+  
+  .cta-button {
+    padding: 0.75rem 2rem;
+    background-color: white;
+    color: #007bff;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+  

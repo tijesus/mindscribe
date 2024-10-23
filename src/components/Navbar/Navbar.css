@@ -1,0 +1,102 @@
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;  /* Space between logo, nav-center, and nav-right */
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #333;
+  color: #fff;
+}
+
+/* Logo */
+.logo {
+  flex: 1;  /* Allow logo to take up extra space on the left */
+}
+
+.logo a{
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0;
+  text-decoration: none;
+}
+
+/* Container for the nav links and user-info */
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex: 2;  /* Allow nav-links to take up remaining space */
+  justify-content: center;  /* Center the nav-center within this space */
+}
+
+/* Centered navigation links */
+.nav-center {
+  display: flex;
+  gap: 2rem;  /* Space between individual nav links */
+}
+
+/* Navigation links */
+.nav-center a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.nav-center a:hover {
+  text-decoration: underline;
+  color: #ddd;  /* Lighter color on hover */
+}
+
+/* Spacing for specific links */
+.nav-center a.home-link {
+  margin-left: 2rem;  /* Adds space between Home link and logo */
+}
+
+.nav-center a.contact-link {
+  margin-right: 2rem;  /* Adds space between Contact link and user-info */
+}
+
+/* User info (profile picture, name, logout) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;  /* Space between username and profile picture */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;  /* Space between username and profile picture */
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Logout button styles */
+.logout-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #e60000;
+}
+
+/* Links for Login/Sign Up */
+.nav-right a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+
+.nav-right a:hover {
+  text-decoration: underline;
+  color: #ddd;
+}
