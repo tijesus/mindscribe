@@ -1,34 +1,48 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link for navigation to Forgot Password
 import './Login.css'; // Assuming you have your CSS for styling
+import apiEngine from '../../api/requests'; // Import your API engine
+import endpoints from '../../api/endPoints'; // Import your API endpoints
 
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState(''); // Changed from username to email
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const navigate = useNavigate();  // Hook to navigate programmatically
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Simple validation (replace with your authentication logic)
-    if (username === '' || password === '') {
-      setError('Please enter both username and password');
+    // Simple validation
+    if (email === '' || password === '') {
+      setError('Please enter both email and password');
       return;
     }
 
-    // Simulate successful login
-    const user = {
-      username, // Use username here
-      password, // Optional, if you need it later
-      photo: 'https://via.placeholder.com/40' // Placeholder profile image
-    };
+    try {
+      // Make an API call to login
+      const response = await apiEngine.post(endpoints.AUTH_ENDPOINTS.LOGIN, {
+        email, // Use email here
+        password,
+      });
 
-    onLogin(user);  // Pass the user info to the parent component (App.js)
-    
-    // Redirect to homepage after login
-    navigate('/');
+      // Assuming your API returns user data on successful login
+      const user = response.data;
+
+      // Call the onLogin prop function with user data
+      onLogin(user);  
+
+      // Redirect to homepage after login
+      navigate('/');
+    } catch (error) {
+      console.error('Login failed:', error);
+      if (error.response) {
+        setError(error.response.data.message || 'Login failed. Please check your credentials.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+    }
   };
 
   return (
@@ -37,12 +51,12 @@ const Login = ({ onLogin }) => {
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin}>
         <div className="input-group">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input 
-            type="text" 
-            id="username" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
+            type="email" 
+            id="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
             required 
           />
         </div>

@@ -3,6 +3,7 @@ const API_BASE_URL = 'http://mindscribe.praiseafk.tech/api';
 export const AUTH_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/auth/login`,
     SIGNUP: `${API_BASE_URL}/auth/signup`,
+    LOGOUT: `${API_BASE_URL}/auth/logout`,
     FORGOT_PASSWORD: `${API_BASE_URL}/auth/forgot-password`,
     RESET_PASSWORD: `${API_BASE_URL}/auth/reset-password`,
 };
