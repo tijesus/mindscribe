@@ -1,18 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import postsData from '../../data/Posts.json'; // Import your JSON data here
-import './Blog.css'; // Your CSS for the blog page
+import apiEngine from '../../api/requests'; 
+import './Blog.css'; 
 
 const Blog = ({ user }) => {
-  const [posts, setPosts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [posts, setPosts] = useState([]); // State to hold posts
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  // Load posts from posts.json or your API
+  // Load posts from the API
   useEffect(() => {
-    setPosts(postsData); // Replace with API call if needed
+    async function fetchPosts() {
+      try {
+        const response = await apiEngine.get('https://mindscribe.praiseafk.tech/posts/?page=1&limit=10'); // Use the provided URL for fetching posts
+        console.log('Posts fetched:', response.data); // Log the entire response data for debugging
+
+        // Log the structure of the response for debugging
+        console.log('Response structure:', JSON.stringify(response.data, null, 2));
+
+        // Assuming the posts are directly in response.data
+        if (response.data && Array.isArray(response.data)) { // Adjust if your API structure is different
+          setPosts(response.data); // Set posts state with the fetched data
+        } else {
+          setError('Unexpected data structure received.'); // Set error for unexpected structure
+        }
+      } catch (error) {
+        console.error('Error fetching posts:', error); // Log the error
+        setError('Failed to load posts. Please try again later.'); // Set error message for user
+      } finally {
+        setLoading(false); // Set loading to false after attempt
+      }
+    }
+    fetchPosts();
   }, []);
 
-  // Filter posts only if search query is entered, otherwise show all posts
+  // Filter posts based on the search query
   const filteredPosts = searchQuery
     ? posts.filter(post => {
         const lowerCaseQuery = searchQuery.toLowerCase();
@@ -21,12 +44,17 @@ const Blog = ({ user }) => {
           post.content.toLowerCase().includes(lowerCaseQuery)
         );
       })
-    : posts; // When searchQuery is empty, show all posts
+    : posts; // Show all posts when searchQuery is empty
 
   return (
     <div className="blog-page">
-      {/* Add a console log to check if the user is passed */}
-      {console.log('User:', user)}
+      {console.log('User:', user)} {/* Log the user for debugging */}
+
+      {/* Loading Indicator */}
+      {loading && <p>Loading posts...</p>} {/* Show loading text if loading is true */}
+      
+      {/* Error Message */}
+      {error && <p className="error-message">{error}</p>} {/* Display error message if present */}
 
       {/* Search and Create Post Section */}
       <div className="top-section">
@@ -50,25 +78,27 @@ const Blog = ({ user }) => {
 
       {/* Display all posts or filtered posts based on search query */}
       <div className="posts-list">
-        {filteredPosts.length > 0 ? (
+        {filteredPosts.length > 0 ? ( // Check if there are posts to display
           filteredPosts.map((post) => (
             <div className="post-card" key={post.id}>
               <div className="post-image-container">
-                <img src={post.image} alt={post.title} className="post-image" />
+                <img src={post.bannerUrl} alt={post.title} className="post-image" />
               </div>
               <div className="post-content">
                 <h2>{post.title}</h2>
                 <div className="post-meta">
                   <div className="author-info">
-                    <img src={post.authorPic} alt={post.author} className="author-pic" />
-                    <span>{post.author}</span>
+                    {post.author?.avatarUrl && (
+                      <img src={post.author.avatarUrl} alt={post.author.username} className="author-pic" />
+                    )}
+                    <span>{post.author.firstname} {post.author.lastname}</span>
                   </div>
                   <div className="post-timestamp">
-                    <span>Published: {post.published_date}</span>
-                    <span>Reading Time: {post.reading_time}</span>
+                    <span>Published: {new Date(post.createdAt).toLocaleDateString()}</span>
+                    <span>Reading Time: {post.readTime} min</span>
                   </div>
                 </div>
-                <p>{post.content}</p>
+                <p>{post.content.slice(0, 100)}...</p>
                 <div className="post-actions">
                   <Link to={`/posts/${post.id}`} className="read-more-button">Read More</Link>
                 </div>
@@ -76,7 +106,7 @@ const Blog = ({ user }) => {
             </div>
           ))
         ) : (
-          <p className='no-post'>No posts found for your search.</p>
+          !loading && !error && <p className='no-post'>No posts found for your search.</p> // Show message only if not loading and no error
         )}
       </div>
     </div>

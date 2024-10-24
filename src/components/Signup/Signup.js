@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import './Signup.css';
+import apiEngine from '../../api/requests'; // API handler
+import endpoints from '../../api/endPoints'; // API endpoints
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    username: '',
+    firstname: '',
+    lastname: '',
+    username: '', 
     email: '',
     password: '',
     confirmPassword: '',
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // Initialize navigate
+  const [apiError, setApiError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,9 +22,10 @@ const SignUp = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const { fullName, username, email, password, confirmPassword } = formData;
+    const { firstname, lastname, username, email, password, confirmPassword } = formData;
 
-    if (!fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (!firstname.trim()) newErrors.firstname = 'First name is required';
+    if (!lastname.trim()) newErrors.lastname = 'Last name is required';
     if (!username.trim()) newErrors.username = 'Username is required';
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,8 +39,7 @@ const SignUp = () => {
     if (!password) {
       newErrors.password = 'Password is required';
     } else if (!passwordRegex.test(password)) {
-      newErrors.password =
-        'Password must contain at least 8 characters, including uppercase, lowercase, number, and a special character';
+      newErrors.password = 'Password must contain at least 8 characters, including uppercase, lowercase, number, and a special character';
     }
 
     if (password !== confirmPassword) {
@@ -47,14 +49,39 @@ const SignUp = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length === 0) {
-      console.log('Form submitted successfully:', formData);
-      navigate('/login'); // Redirect to the login page after successful sign-up
+      try {
+        // Change the URL to the relative path
+        const response = await apiEngine.post('/api/auth/signup', {
+          first_name: formData.firstname,
+          last_name: formData.lastname,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        });
+
+        console.log('API Response:', response.data);
+        setApiError('');
+      } catch (error) {
+        console.error('Signup failed:', error);
+        if (error.response) {
+          console.error('Response data:', error.response.data);
+          setApiError(error.response.data.message || 'An error occurred during signup');
+        } else if (error.request) {
+          console.error('Request data:', error.request);
+          setApiError('No response from the server. Please try again later.');
+        } else {
+          console.error('Error message:', error.message);
+          setApiError('An unexpected error occurred.');
+        }
+      }
     } else {
       setErrors(validationErrors);
+      console.log("Validation Errors: ", validationErrors);
     }
   };
 
@@ -64,21 +91,39 @@ const SignUp = () => {
       <p className="form-instruction">Please fill in all the fields below to create your account.</p>
 
       <form onSubmit={handleSubmit} className="signup-form">
+        {/* First Name Field */}
         <div className="form-group">
-          <label htmlFor="fullName">Full Name</label>
+          <label htmlFor="firstname">First Name</label>
           <input
             type="text"
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
+            id="firstname"
+            name="firstname" 
+            value={formData.firstname}
             onChange={handleChange}
-            className={errors.fullName ? 'input-error' : ''}
-            placeholder="Enter your full name"
+            className={errors.firstname ? 'input-error' : ''}
+            placeholder="Enter your first name"
             required
           />
-          {errors.fullName && <span className="error-text">{errors.fullName}</span>}
+          {errors.firstname && <span className="error-text">{errors.firstname}</span>}
         </div>
 
+        {/* Last Name Field */}
+        <div className="form-group">
+          <label htmlFor="lastname">Last Name</label>
+          <input
+            type="text"
+            id="lastname"
+            name="lastname" 
+            value={formData.lastname}
+            onChange={handleChange}
+            className={errors.lastname ? 'input-error' : ''}
+            placeholder="Enter your last name"
+            required
+          />
+          {errors.lastname && <span className="error-text">{errors.lastname}</span>}
+        </div>
+
+        {/* Username Field */}
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input
@@ -94,6 +139,7 @@ const SignUp = () => {
           {errors.username && <span className="error-text">{errors.username}</span>}
         </div>
 
+        {/* Email Field */}
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -109,6 +155,7 @@ const SignUp = () => {
           {errors.email && <span className="error-text">{errors.email}</span>}
         </div>
 
+        {/* Password Field */}
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -124,6 +171,7 @@ const SignUp = () => {
           {errors.password && <span className="error-text">{errors.password}</span>}
         </div>
 
+        {/* Confirm Password Field */}
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
@@ -138,6 +186,8 @@ const SignUp = () => {
           />
           {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
         </div>
+
+        {apiError && <p className="api-error">{apiError}</p>}
 
         <button type="submit" className="submit-button">Sign Up</button>
       </form>

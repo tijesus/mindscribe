@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Quill theme
-import 'highlight.js/styles/monokai.css'; // Code syntax highlighting theme
-import hljs from 'highlight.js'; // Highlight.js for syntax highlighting
+import 'react-quill/dist/quill.snow.css';
+import 'highlight.js/styles/monokai.css'; 
+import hljs from 'highlight.js'; 
 import axios from 'axios';
-import './CreatePost.css'; // Custom CSS
+import endpoints from '../../api/endPoints'; 
+import './CreatePost.css'; 
 
 // Initialize Highlight.js for Quill
 hljs.configure({
-  languages: ['javascript', 'python', 'html', 'css'], // Add any languages you need
+  languages: ['javascript', 'python', 'html', 'css'], 
 });
 
 // Font whitelist for the toolbar (common fonts on user systems)
@@ -19,26 +20,14 @@ ReactQuill.Quill.register(Font, true);
 const modules = {
   toolbar: {
     container: [
-      [{ 'header': '1', 'data-tooltip': 'Header 1' }, { 'header': '2', 'data-tooltip': 'Header 2' }, { 'font': [], 'data-tooltip': 'Font' }],
-      [{ 'align': [], 'data-tooltip': 'Align' }],
-      ['bold', 'italic', 'underline', 'strike'].map((item) => ({
-        [item]: true,
-        'data-tooltip': item.charAt(0).toUpperCase() + item.slice(1),
-      })),
-      [{ 'color': [], 'data-tooltip': 'Text Color' }, { 'background': [], 'data-tooltip': 'Background Color' }],
-      ['blockquote', 'code-block'].map((item) => ({
-        [item]: true,
-        'data-tooltip': item.charAt(0).toUpperCase() + item.slice(1).replace('-', ' '),
-      })),
-      [{ 'list': 'ordered', 'data-tooltip': 'Ordered List' }, { 'list': 'bullet', 'data-tooltip': 'Bullet List' }],
-      ['link', 'image'].map((item) => ({
-        [item]: true,
-        'data-tooltip': item.charAt(0).toUpperCase() + item.slice(1),
-      })),
-      ['clean'].map(() => ({
-        'clean': true,
-        'data-tooltip': 'Clear Formatting',
-      })),
+      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+      [{ 'align': [] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      ['blockquote', 'code-block'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['link', 'image'],
+      ['clean'],
     ],
   },
   syntax: {
@@ -52,21 +41,13 @@ const formats = [
   'link', 'image',
 ];
 
-const CreatePost = ({ user }) => {
+const CreatePost = ({ user, seriesId, bannerUrl }) => { // Expect seriesId and bannerUrl as props
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [postType, setPostType] = useState('');
-  const [subCategory, setSubCategory] = useState('');
   const [error, setError] = useState('');
-  const quillRef = useRef(null);
+  const quillRef = useRef(null); // Ref for ReactQuill
 
-  // Sub-categories for each post type
-  const subCategories = {
-    tech: ['Frontend', 'Backend', 'DevOps', 'UI/UX'],
-    health: ['Nutrition', 'Fitness', 'Mental Health'],
-    financial: ['Investing', 'Savings', 'Budgeting'],
-  };
-
+  // Image upload handler with 5MB limit
   const imageHandler = useCallback(async () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -76,20 +57,25 @@ const CreatePost = ({ user }) => {
     input.onchange = async () => {
       const file = input.files?.[0];
 
-      if (file && file.size <= 5 * 1024 * 1024) {
+      // Check if file exists and is below 5MB
+      if (file && file.size <= 5 * 1024 * 1024) { // 5MB size limit
         try {
           const formData = new FormData();
           formData.append('file', file);
 
-          const response = await axios.post('http://your-api-url/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+          // Send the image to the server
+          const response = await axios.post(`${endpoints.CREATE}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
           });
 
           const imageUrl = response.data.fileUrl;
+          // Insert image into the editor
           const quill = quillRef.current?.getEditor();
           const range = quill?.getSelection();
           if (range) {
-            quill.insertEmbed(range.index, 'image', imageUrl);
+            quill?.insertEmbed(range.index, 'image', imageUrl);
           }
         } catch (error) {
           console.error('Image upload failed:', error);
@@ -101,6 +87,7 @@ const CreatePost = ({ user }) => {
     };
   }, []);
 
+  // Set the custom image handler in Quill after mount
   useEffect(() => {
     const quill = quillRef.current?.getEditor();
     if (quill) {
@@ -108,35 +95,48 @@ const CreatePost = ({ user }) => {
     }
   }, [imageHandler]);
 
-  const handleSubmit = (e) => {
+  // Form submission logic
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user || !user.username) {
-      console.error('User is not logged in.');
+      console.error('User is not logged in or user data is not available.');
       return;
     }
 
+    // Create the new post object using the specified schema format
     const newPost = {
-      id: Date.now(),
       title,
       content,
-      postType,
-      subCategory: postType === 'tech' ? subCategory : null,
-      author: user.username,
-      authorPic: user.profilePic,
-      published_date: new Date().toLocaleString(),
+      published: true, // This can be dynamic if needed
+      readTime: Math.ceil(content.split(' ').length / 200), // Approximate read time based on average reading speed
+      bannerUrl: bannerUrl || 'https://mindsrcibe.s3.amazonaws.com/defaultBanner.jpg', // Use passed banner URL or a default
+      seriesId: seriesId || '123e4567-e89b-12d3-a456-426614174000', // Use passed series ID or a default
+      id: Date.now().toString(), // Generate a unique ID based on timestamp
+      createdAt: new Date().toISOString(), // Set creation date
+      updatedAt: new Date().toISOString(), // Set updated date
     };
 
-    console.log('New Post:', newPost);
-    setTitle('');
-    setContent('');
-    setPostType('');
-    setSubCategory('');
+    try {
+      const response = await axios.post(`${endpoints.CREATE}`, newPost);
+      console.log('Post created successfully:', response.data);
+      
+      // Clear the form after successful post creation
+      setTitle('');
+      setContent('');
+      setError(''); 
+    } catch (error) {
+      console.error('Error creating post:', error);
+      setError('Failed to create post. Please try again.');
+    }
   };
 
+  // Highlight code after content change
   useEffect(() => {
     const codeBlocks = document.querySelectorAll('.ql-syntax');
-    codeBlocks.forEach((block) => hljs.highlightElement(block));
+    codeBlocks.forEach((block) => {
+      hljs.highlightElement(block); 
+    });
   }, [content]);
 
   return (
@@ -151,33 +151,6 @@ const CreatePost = ({ user }) => {
           onChange={(e) => setTitle(e.target.value)}
           required
         />
-
-        <select
-          value={postType}
-          onChange={(e) => setPostType(e.target.value)}
-          required
-        >
-          <option value="">Select Post Type</option>
-          <option value="tech">Tech</option>
-          <option value="health">Health</option>
-          <option value="financial">Financial</option>
-        </select>
-
-        {postType === 'tech' && (
-          <select
-            value={subCategory}
-            onChange={(e) => setSubCategory(e.target.value)}
-            required
-          >
-            <option value="">Select Sub-Category</option>
-            {subCategories.tech.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        )}
-
         <ReactQuill
           ref={quillRef}
           value={content}
@@ -186,7 +159,6 @@ const CreatePost = ({ user }) => {
           formats={formats}
           placeholder="Write your post content..."
         />
-
         <button type="submit">Create Post</button>
       </form>
     </div>
