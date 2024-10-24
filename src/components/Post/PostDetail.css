@@ -1,0 +1,103 @@
+/* Container for the post details */
+.post-detail {
+    max-width: 900px; /* Increased max width for image inclusion */
+    margin: 0 auto; /* Centers the content */
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+  }
+  
+  /* Post Image */
+  .post-image-container {
+    width: 100%; /* Ensure image container spans full width */
+    height: auto;
+    margin-bottom: 1.5rem; /* Adds space between the image and title */
+  }
+  
+  .post-image {
+    width: 100%; /* Full-width responsive image */
+    height: auto; /* Maintains aspect ratio */
+    border-radius: 10px; /* Rounded corners for the image */
+    object-fit: cover; /* Ensures the image scales and crops properly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow under the image */
+  }
+  
+  /* Post Title */
+  .post-detail h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  /* Author Section */
+  .author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .author-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    object-fit: cover;
+  }
+  
+  .author-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Category Tag */
+  .category {
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Post Content Paragraph */
+  .post-detail p {
+    font-size: 1.125rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Post Metadata */
+  .metadata {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #888;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+  }
+  
+  .metadata span {
+    display: inline-block;
+    margin-right: 1.5rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .post-detail {
+      padding: 1rem;
+    }
+  
+    .post-detail h1 {
+      font-size: 2rem;
+    }
+  
+    .metadata {
+      font-size: 0.75rem;
+    }
+  }
+  

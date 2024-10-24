@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://mindscribe.praiseafk.tech/';
+const API_BASE_URL = 'http://mindscribe.praiseafk.tech/api';
 
 export const AUTH_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/auth/login`,

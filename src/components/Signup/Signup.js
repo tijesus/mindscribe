@@ -15,6 +15,8 @@ const SignUp = () => {
 
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // New loading state
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -54,9 +56,13 @@ const SignUp = () => {
     const validationErrors = validateForm();
 
     if (Object.keys(validationErrors).length === 0) {
+      setIsLoading(true); // Set loading state to true
+      setApiError(''); // Clear previous API error
+      setSuccessMessage(''); // Clear previous success message
+
       try {
-        // Change the URL to the relative path
-        const response = await apiEngine.post('/api/auth/signup', {
+        // Use the SIGNUP endpoint from endpoints.js
+        const response = await apiEngine.post(endpoints.AUTH_ENDPOINTS.SIGNUP, {
           first_name: formData.firstname,
           last_name: formData.lastname,
           username: formData.username,
@@ -65,7 +71,15 @@ const SignUp = () => {
         });
 
         console.log('API Response:', response.data);
-        setApiError('');
+        setSuccessMessage('Account created successfully!'); // Set success message
+        setFormData({ // Reset form data after successful signup
+          firstname: '',
+          lastname: '',
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
       } catch (error) {
         console.error('Signup failed:', error);
         if (error.response) {
@@ -78,6 +92,8 @@ const SignUp = () => {
           console.error('Error message:', error.message);
           setApiError('An unexpected error occurred.');
         }
+      } finally {
+        setIsLoading(false); // Set loading state back to false
       }
     } else {
       setErrors(validationErrors);
@@ -188,8 +204,11 @@ const SignUp = () => {
         </div>
 
         {apiError && <p className="api-error">{apiError}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>} {/* Success message display */}
 
-        <button type="submit" className="submit-button">Sign Up</button>
+        <button type="submit" className="submit-button" disabled={isLoading}>
+          {isLoading ? 'Creating Account...' : 'Sign Up'} {/* Show loading state */}
+        </button>
       </form>
     </div>
   );
