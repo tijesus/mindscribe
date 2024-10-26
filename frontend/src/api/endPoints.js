@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://mindscribe.praiseafk.tech/api';
+const API_BASE_URL = 'https://mindscribe.praiseafk.tech';
 
 export const AUTH_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/auth/login`,
@@ -10,6 +10,7 @@ export const AUTH_ENDPOINTS = {
 
 export const POSTS_ENDPOINTS = {
     GET_ALL: 'https://mindscribe.praiseafk.tech/posts/?page=1&limit=10',
+    // GET_ALL: `${API_BASE_URL}/posts/`,
     GET_ONE: (id) => `${API_BASE_URL}/posts/${id}`,
     CREATE: `${API_BASE_URL}/posts`,
     UPDATE: (id) => `${API_BASE_URL}/posts/${id}`,

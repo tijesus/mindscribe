@@ -28,7 +28,7 @@ const Login = ({ onLogin }) => {
       });
 
       // Assuming your API returns user data on successful login
-      const user = response.data;
+      const user = response;
 
       // Call the onLogin prop function with user data
       onLogin(user);  
@@ -38,7 +38,7 @@ const Login = ({ onLogin }) => {
     } catch (error) {
       console.error('Login failed:', error);
       if (error.response) {
-        setError(error.response.data.message || 'Login failed. Please check your credentials.');
+        setError(error.response.message || 'Login failed. Please check your credentials.');
       } else {
         setError('An unexpected error occurred. Please try again.');
       }

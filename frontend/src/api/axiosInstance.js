@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://mindscribe.praiseafk.tech/api",
+  baseURL: "https://mindscribe.praiseafk.tech",
   timeout: 5000, // Request timeout (in ms)
   headers: {
     "Content-Type": "application/json",

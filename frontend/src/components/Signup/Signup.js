@@ -63,14 +63,14 @@ const SignUp = () => {
       try {
         // Use the SIGNUP endpoint from endpoints.js
         const response = await apiEngine.post(endpoints.AUTH_ENDPOINTS.SIGNUP, {
-          first_name: formData.firstname,
-          last_name: formData.lastname,
+          firstname: formData.firstname,
+          lastname: formData.lastname,
           username: formData.username,
           email: formData.email,
           password: formData.password,
         });
 
-        console.log('API Response:', response.data);
+        console.log('API Response:', response);
         setSuccessMessage('Account created successfully!'); // Set success message
         setFormData({ // Reset form data after successful signup
           firstname: '',
