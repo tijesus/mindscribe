@@ -9,8 +9,7 @@ export const AUTH_ENDPOINTS = {
 };
 
 export const POSTS_ENDPOINTS = {
-    GET_ALL: 'https://mindscribe.praiseafk.tech/posts/?page=1&limit=10',
-    // GET_ALL: `${API_BASE_URL}/posts/`,
+    GET_ALL: (page, limit) => `${API_BASE_URL}/posts/?page=${page}&limit=${limit}`, // Function-based for pagination
     GET_ONE: (id) => `${API_BASE_URL}/posts/${id}`,
     CREATE: `${API_BASE_URL}/posts`,
     UPDATE: (id) => `${API_BASE_URL}/posts/${id}`,
@@ -18,8 +17,8 @@ export const POSTS_ENDPOINTS = {
 };
 
 const endpoints = {
-  AUTH_ENDPOINTS,
-  POSTS_ENDPOINTS,
+    AUTH_ENDPOINTS,
+    POSTS_ENDPOINTS,
 };
 
 export default endpoints;

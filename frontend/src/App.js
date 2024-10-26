@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
@@ -14,29 +15,51 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Store user data
+  const [loading, setLoading] = useState(true); // Track loading state
 
+  // Fetch user profile if token exists on initial load
   useEffect(() => {
-    // Retrieve user information from local storage to persist state
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Set user state if available
+    const token = localStorage.getItem('access_token'); // Retrieve the token
+
+    if (token) {
+      axios
+        .get('https://mindscribe.praiseafk.tech/api/auth/profile', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          const { user } = response.data; // Extract user data
+          setUser(user); // Set user data in state
+        })
+        .catch((error) => {
+          console.error('Error fetching user profile:', error);
+          handleLogout(); // Clear state if token is invalid
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false); // Stop loading if no token is found
     }
   }, []);
 
-  const handleLogin = (user) => {
-    localStorage.setItem('user', JSON.stringify(user)); // Store user info in local storage
-    setUser(user); // Set the user after login
+  // Handle login by storing token and user data
+  const handleLogin = (data) => {
+    const { access_token, user } = data; // Extract token and user from response
+    localStorage.setItem('access_token', access_token); // Store the token
+    setUser(user); // Store user details in state
   };
 
+  // Handle logout by removing token and clearing user state
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Remove user info from local storage
-    setUser(null); // Clear the user on logout
+    localStorage.removeItem('access_token'); // Remove the token
+    setUser(null); // Clear user data from state
   };
+
+  if (loading) return <div>Loading...</div>; // Display loading indicator
 
   return (
     <Router>
       <div className="App">
+        {/* Pass user data (avatar, username) to Navbar */}
         <Navbar user={user} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Home />} />

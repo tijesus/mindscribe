@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import endpoints from '../../api/endPoints'; // Importing from endpoint.js
 import './Home.css';
-
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const page = 1; // Default page
+    const limit = 10; // Default limit per page
+
     useEffect(() => {
-        async function loadPosts() {
+        const loadPosts = async () => {
             setLoading(true);
             try {
-                const url = 'https://mindscribe.praiseafk.tech/posts/?page=1&limit=10'; // Directly using the full URL
-                const response = await axios.get(url); // Using axios directly for the call
+                // Properly invoke the GET_ALL function with parameters
+                const url = endpoints.POSTS_ENDPOINTS.GET_ALL(page, limit);
+                const response = await axios.get(url);
 
-                console.log('API Response:', response); // Log the response for debugging
+                console.log('API Response:', response); // Debugging
 
-                if (response.data && Array.isArray(response.data.data)) {
-                    setPosts(response.data.data);
+                if (response.status === 200 && Array.isArray(response.data.data)) {
+                    setPosts(response.data.data); // Store posts in state
                     console.log('Posts successfully fetched:', response.data.data);
                 } else {
-                    console.error('Unexpected response structure:', response.data);
-                    setPosts([]); 
+                    console.error('Unexpected response structure:', response);
+                    setPosts([]);
                 }
             } catch (err) {
                 console.error('Error fetching posts:', err);
 
                 if (err.response) {
                     console.error('Server responded with:', err.response.status, err.response.data);
-                    setError(`Error: ${err.response.status} - ${err.response.data.message || 'Unknown Error'}`); // Corrected error setting
+                    setError(`Error: ${err.response.status} - ${err.response.data.message || 'Unknown Error'}`);
                 } else if (err.request) {
                     console.error('No response received:', err.request);
                     setError('No response from server. Check your connection.');
@@ -40,10 +44,10 @@ const Home = () => {
             } finally {
                 setLoading(false);
             }
-        }
+        };
 
         loadPosts();
-    }, []);
+    }, [page, limit]); // Add dependencies to re-fetch on changes
 
     return (
         <div className="landing-page">
@@ -68,7 +72,7 @@ const Home = () => {
                                 <img src={post.bannerUrl} alt={post.title} className="post-image" />
                                 <h3>{post.title}</h3>
                                 <p>{post.content.slice(0, 100)}...</p>
-                                <a href={`/posts/${post.id}`} className="read-more">Read More</a> {/* Corrected link */}
+                                <a href={`/posts/${post.id}`} className="read-more">Read More</a>
                             </div>
                         ))
                     ) : (
