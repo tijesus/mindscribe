@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import './Signup.css';
 import apiEngine from '../../api/requests'; // API handler
 import endpoints from '../../api/endPoints'; // API endpoints
 
 const SignUp = () => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -80,6 +83,9 @@ const SignUp = () => {
           password: '',
           confirmPassword: '',
         });
+
+        // Redirect to the login page
+        navigate('/login'); // Adjust the path according to your routing setup
       } catch (error) {
         console.error('Signup failed:', error);
         if (error.response) {
