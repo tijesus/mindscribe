@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  mindscribe:
+    build:
+      context: .
+      dockerfile: prod.Dockerfile
+    image: mindscribe:prod
+    container_name: mindscribe
+    ports:
+      - "3003:3003"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3003/users"]
+      interval: 10m30s
+      timeout: 30s
+      retries: 2
+      start_period: 30s
