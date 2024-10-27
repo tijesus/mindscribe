@@ -1,85 +1,255 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MindScribe Blog API 🚀
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> A powerful and feature-rich blog API built with NestJS, featuring robust authentication, real-time interactions, and seamless content management.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 
-## Description
+## ✨ Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Core Functionality
+- **🔐 Authentication & Authorization**
+  - JWT-based authentication
+  - Role-based access control
+  - Secure password hashing with bcrypt
+  
+- **📝 Post Management**
+  - Create, read, update, and delete blog posts
+  - Rich text support
+  - Image uploads to AWS S3
+  - Draft and publish workflow
+  
+- **👥 Social Features**
+  - Like/Unlike posts
+  - Comment system
+  - Post bookmarking
+  - User profiles
 
-## Project setup
+### Technical Features
+- **📚 API Documentation**
+  - Comprehensive Swagger documentation
+  - Interactive API testing interface
+  
+- **🔄 Real-time Updates**
+  - Redis-powered caching
+  - Optimized performance
+  
+- **📧 Notifications**
+  - Email notifications via Mailgun
+  - Custom email templates
 
-```bash
-$ npm install
+## 🛠️ Tech Stack
+
+- **Backend Framework**: NestJS
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Caching**: Redis
+- **Containerization**: Docker
+- **Cloud Storage**: AWS S3
+- **Email Service**: Mailgun
+- **Documentation**: Swagger
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js (v16 or higher)
+- Docker and Docker Compose
+- Git
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/tijesus/mindscribe.git
+   cd backend/blog-app/
+   ```
+
+2. **Environment Setup**
+   
+   Create a `.env` file in the root directory with the following configuration:
+
+   ```env
+   # Database Configuration
+   DATABASE_URL='postgresql://username:password@host:port/database'
+
+   # Authentication
+   SALT='10'
+   SECRET='your-jwt-secret'
+
+   # Redis Configuration
+   REDIS_URL='your-redis-url'
+
+   # Server Configuration
+   PORT=3000
+
+   # AWS Configuration
+   AWS_ACCESS_KEY_ID='your-aws-key'
+   AWS_SECRET_ACCESS_KEY='your-aws-secret'
+   AWS_S3_REGION='your aws bucket region'
+   AWS_S3_BUCKET_NAME='your bucket name'
+
+   # Mailgun Configuration
+   MAILGUN_API_KEY='your-mailgun-key'
+   MAILGUN_URL='your mailgun url'
+   TEMPLATE_DIRS='/templates/'
+   ```
+
+3. **Launch with Docker**
+   ```bash
+   docker compose -f dev.docker-compose.yml up
+   ```
+
+4. **Access the API**
+   - API: `http://localhost:3000`
+   - Swagger Documentation: `http://localhost:3000/api`
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+
+```typescript
+POST /auth/signup - Register a new user
+POST /auth/login    - User login
+POST /auth/logout - Logout a user
 ```
 
-## Compile and run the project
+### Posts Endpoints
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```typescript
+GET    /posts     - Get all posts
+POST   /posts     - Create a new post
+GET    /posts/:id - Get post by ID
+PUT    /posts/:id - Update post
+DELETE /posts/:id - Delete post
 ```
 
-## Run tests
+### Social Interaction Endpoints
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```typescript
+POST   /posts/:id/like     - Like a post
+DELETE /posts/:id/like     - Unlike a post
+POST   /posts/:id/bookmark - Bookmark a post
+DELETE /posts/:id/bookmark - Delete bookmark
+POST   /posts/:id/comment  - Comment on a post
 ```
 
-## Resources
+## 🐳 Docker Support
 
-Check out a few resources that may come in handy when working with NestJS:
+The application is fully dockerized for consistent development and deployment environments.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Development Environment
 
-## Support
+```bash
+docker compose -f dev.docker-compose.yml up
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+This will start:
+- NestJS application in development mode
+- PostgreSQL database
+- Redis instance
+- Prisma Studio on port 5555
 
-## Stay in touch
+### Production Environment
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+docker compose -f docker-compose.yml up
+```
 
-## License
+## 💾 Database Management
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Prisma Commands
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Run Migrations
+npx prisma migrate dev
+
+# Reset Database
+npx prisma reset
+
+# Access Prisma Studio
+npx prisma studio
+```
+
+## 📧 Email Templates
+
+Email templates are stored in the `/templates` directory and support HTML with dynamic variable injection.
+
+Available templates:
+- Welcome Email
+- Password Reset
+- Comment Notification
+- Post Like Notification
+
+## 🔐 Security Features
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- Rate limiting
+- CORS protection
+- Helmet security headers
+- Input validation and sanitization
+
+## 🧪 Testing
+
+```bash
+# Unit Tests
+npm run test
+
+# E2E Tests
+npm run test:e2e
+
+# Test Coverage
+npm run test:cov
+```
+
+## 📈 Performance Optimizations
+
+- Redis caching for frequently accessed data
+- Database query optimization
+- Connection pooling
+- Response compression
+- Static file caching
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit your changes
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+4. Push to the branch
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 👥 Contact
+
+Author: Praise Josiah
+Email: praisechinonso21@gmail.com
+
+## 🙏 Acknowledgments
+
+- NestJS Documentation
+- Prisma Documentation
+- Docker Documentation
+- AWS SDK Documentation
+
