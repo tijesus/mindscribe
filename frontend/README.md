@@ -1,70 +1,144 @@
-# Getting Started with Create React App
+# Mindscribe Blog Frontend 📝
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The frontend for Mindscribe, a blog platform built with React.js. This application enables users to explore blog posts, manage their accounts, and interact with the content through seamless user authentication and smooth API integration.
 
-## Available Scripts
+## Features 🚀
 
-In the project directory, you can run:
+- User Authentication: Login, Signup, and Logout
+- Post Management: View, create, edit, and delete posts
+- Responsive Design: Works across desktop and mobile devices
+- Persistent Sessions: Access tokens stored in localStorage for session management
+- API Integration: Interact with the backend using Axios
 
-### `npm start`
+## Technologies Used 🛠️
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React.js: Component-based UI library
+- React Router: Client-side routing
+- Axios: HTTP client for API requests
+- CSS: Styling the components
+- JavaScript (ES6+)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure 📂
 
-### `npm test`
+To display your project’s structure;
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Open your terminal and navigate to your project’s root directory.
+- Run the tree command to generate the structure. For example:
+  use `tree`
+- If you don’t have the tree command installed, you can install it using your package manager. For example, on Ubuntu, you can install it with:
+  use `sudo apt-get install tree` then use `tree` command
 
-### `npm run build`
+## Installation ⚙️
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To get started with the project, follow these steps:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+# Clone the repository
+git clone https://github.com/your-username/mindscribe-frontend.git
+cd mindscribe-frontend
+```
 
-### `npm run eject`
+2. Install dependencies
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```sh
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Start the development server
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```sh
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Environment Variables 🌍
 
-## Learn More
+Make sure the API base URL is correctly configured in axiosInstance.js.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```javascript
+// src/api/axiosInstance.js
+import axios from "axios";
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const axiosInstance = axios.create({
+  baseURL: "https://mindscribe.praiseafk.tech", // API Base URL
+  timeout: 5000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-### Code Splitting
+export default axiosInstance;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Usage 🎯
 
-### Analyzing the Bundle Size
+1.  Login User
+    Here’s an example of the login functionality:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```javascript
+// src/components/Login/Login.js
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axiosInstance.post("/api/auth/login", {
+      email,
+      password,
+    });
+    const { accessToken, user } = response.data;
+    onLogin({ accessToken, user });
+    localStorage.setItem("access_token", accessToken);
+    navigate("/");
+  } catch (error) {
+    console.error("Login failed:", error);
+    setError("Invalid credentials. Please try again.");
+  }
+};
+```
 
-### Making a Progressive Web App
+2.  Fetch User Profile After Login
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```javascript
+// src/App.js
+useEffect(() => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    axiosInstance
+      .get("/api/auth/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => setUser(response.data.user))
+      .catch(() => handleLogout());
+  }
+}, []);
+```
 
-### Advanced Configuration
+## API Endpoints 🔗
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Below are the frontend-relevant endpoints:
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| /auth/login | Post | Login user |
+| /auth/signup | Post | Register new user |
+| /auth/logout | Post | Logout current user |
+| /auth/profile | GET | Fetch logged-in user data |
+| /post/ | Get | Posts made on page |
 
-### Deployment
+## Screenshots 🖼️
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Login Page
 
-### `npm run build` fails to minify
+![Login Page](public/LandingPage.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Blog Page
+
+![Blog Page](public/BlogPage.png)
+
+## Contributing 🤝
+
+We welcome contributions! Please fork the repository, create a branch, and submit a pull request with your changes.
+
+## Author
+
+- Praise Josiah
+- Gabriel Emmanuel

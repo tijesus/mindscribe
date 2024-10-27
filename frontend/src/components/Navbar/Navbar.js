@@ -1,3 +1,4 @@
+// Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
@@ -9,20 +10,20 @@ const Navbar = ({ user, onLogout }) => {
     try {
       // Call the API to log out the user
       await apiEngine.post(endpoints.AUTH_ENDPOINTS.LOGOUT);
-      
-      // Clear user session from local storage or context
-      localStorage.removeItem('user'); // Adjust as per your storage mechanism
-      onLogout(); // Call the onLogout prop to update the parent state
+
+      // Clear the token from local storage and update parent state
+      localStorage.removeItem('access_token'); // Ensure token is cleared
+      onLogout(); // Call the parent onLogout function to clear user state
     } catch (error) {
       console.error('Logout failed:', error);
-      // Handle logout error, if necessary (e.g., show a message)
+      // Optional: Display a message to the user if logout fails
     }
   };
 
   return (
     <nav className="navbar">
       <div className="logo">
-        <a href="/">Mindscribe</a>
+        <Link to="/">Mindscribe</Link> {/* Use Link for navigation */}
       </div>
 
       <div className="nav-links">
@@ -36,9 +37,15 @@ const Navbar = ({ user, onLogout }) => {
         <div className="nav-right">
           {user ? (
             <div className="user-info">
-              <img src={user.photo} alt={user.username} className="user-photo" />
+              <img 
+                src={user.avatarUrl} // Use avatarUrl instead of photo
+                alt={user.username} 
+                className="user-photo" 
+              />
               <span>{user.username}</span>
-              <button onClick={handleLogout} className="logout-button">Logout</button>
+              <button onClick={handleLogout} className="logout-button">
+                Logout
+              </button>
             </div>
           ) : (
             <>
