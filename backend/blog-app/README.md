@@ -68,7 +68,7 @@ Make sure you have the following installed:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/tijesus/mindscribe.git
-   cd backend/blog-app/
+   cd ./mindscribe/backend/blog-app/
    ```
 
 2. **Environment Setup**
