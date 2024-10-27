@@ -49,7 +49,7 @@ function App() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token'); 
+    localStorage.removeItem('access_token'); // Clear token
     setUser(null); // Clear user state
   };
 
