@@ -138,7 +138,7 @@ Below are the frontend-relevant endpoints:
 
 We welcome contributions! Please fork the repository, create a branch, and submit a pull request with your changes.
 
-## Author
+## Contact
 
-- Praise Josiah
-- Gabriel Emmanuel
+Author: Gabriel Emmanuel
+Email: emmanueltijesu@gmail.com
