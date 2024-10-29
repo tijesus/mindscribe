@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
-import apiEngine from '../../api/requests'; 
-import endpoints from '../../api/endPoints'; 
+// import apiEngine from '../../api/requests'; 
+// import endpoints from '../../api/endPoints'; 
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -22,22 +22,35 @@ const Login = ({ onLogin }) => {
   
     try {
       // Call the login API
-      const response = await apiEngine.post(endpoints.AUTH_ENDPOINTS.LOGIN, {
-        email,
-        password,
+      // const response = await apiEngine.post(endpoints.AUTH_ENDPOINTS.LOGIN, {
+      //   email,
+      //   password,
+      // });
+
+      let response;
+      const $response = await fetch('https://mindscribe.praiseafk.tech/auth/login', {
+        method: 'POST', // Specify the HTTP method
+        headers: {
+          'Content-Type': 'application/json', // Specify that we are sending JSON data
+        },
+        body: JSON.stringify({ email, password }), // Convert the data to a JSON string
       });
-  
+      if ($response.ok) { // Check if the request was successful
+        response = await $response.json(); // Parse the JSON response
+        console.log(response); // Log or use the response data
+      } else {
+        console.error('Login failed:', $response.status); // Handle errors
+      }
+
       console.log('Full API Response:', response); // Log the entire response
   
       // Handle the response
-      const { data } = response || {}; // Safely access the data object
+      const { user, accessToken } = response || {}; // Safely access the data object
   
-      if (!data || !data.accessToken || !data.user) {
+      if (!user || !accessToken) {
+        // console.log(data)
         throw new Error('Unexpected API response structure');
       }
-  
-      // If the structure is valid, continue
-      const { accessToken, user } = data;
   
       onLogin({ accessToken, user });
       localStorage.setItem('access_token', accessToken);

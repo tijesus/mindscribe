@@ -52,7 +52,7 @@ const Home = () => {
     return (
         <div className="landing-page">
             <section className="hero">
-                <div className="hero-content">
+                <div className="hero-content" style={{ display:'contents' }}>
                     <h1>Welcome to Mindscribe</h1>
                     <p>Explore amazing articles, tutorials, and guides!</p>
                     <a href="/posts" className="cta-button">Explore Posts</a>
