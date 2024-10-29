@@ -221,7 +221,7 @@ export class AuthController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtGuard)
-  @Get('logout')
+  @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   async logout(@Req() req: Request) {
     //.calculate the ttl for the token and then store in redis with that ttl
