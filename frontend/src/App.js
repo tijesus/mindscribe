@@ -14,28 +14,29 @@ import Login from './components/Login/Login';
 import PostDetail from './components/Post/PostDetail';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
-import endpoints from '../src/api/endPoints';
-import Profile from './components/Profile/Profile'; 
 
 function App() {
   const [user, setUser] = useState(null); // Store user details
   const [loading, setLoading] = useState(true); // Track loading state
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-  
+    const token = localStorage.getItem('access_token'); // Retrieve the token
+
     if (token) {
       axios
-        .get(endpoints.AUTH_ENDPOINTS.LOGIN, { headers: { Authorization: `Bearer ${token}` } })
-        .then((response) => {
-          const { user } = response; // Ensure you access the right object
-          setUser(user);
-        })
-        .catch((error) => {
-          console.error('Error fetching user profile:', error);
-          handleLogout(); // Trigger logout only on authentication errors
-        })
-        .finally(() => setLoading(false));
+      .get('https://mindscribe.praiseafk.tech/auth/', {
+        headers: { Authorization: `Bearer ${token}` }, // Fixed interpolation
+      })
+      .then((response) => {
+        const { user } = response;
+        setUser(user);
+      })
+      .catch((error) => {
+        console.error('Error fetching user profile:', error);
+        handleLogout();
+      })
+      .finally(() => setLoading(false));
+    
     } else {
       setLoading(false);
     }
@@ -43,12 +44,12 @@ function App() {
 
   const handleLogin = (data) => {
     const { accessToken, user } = data; // Extract accessToken and user
-    localStorage.setItem('access_token', accessToken); // Store the token
+    localStorage.setItem("access_token", accessToken); // Store the token
     setUser(user); // Store user data in state
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token'); // Clear token
+    localStorage.removeItem("access_token"); // Clear token
     setUser(null); // Clear user state
   };
 
@@ -59,14 +60,14 @@ function App() {
       <div className="App">
         <Navbar user={user} onLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home user={user} />} />
           <Route path="/posts" element={<Blog user={user} />} />
           <Route path="/posts/:id" element={<PostDetail />} />
           <Route path="/create-post" element={<CreatePost user={user} />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Handle login */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile" element={<Profile />} /> {/* Add profile route */}
