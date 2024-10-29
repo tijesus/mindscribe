@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../api/requests";
 import "./PostDetail.css";
-import { BounceLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import LikeButton from "./LikeButton.js";
+import BookmarkButton from "./BookmarkButton.js";
 
 const center = {
   display: "flex",
@@ -18,8 +19,6 @@ const center = {
 const PostDetail = ({ user }) => {
   const { id } = useParams(); // Get post ID from URL
   const [post, setPost] = useState(null); // Post state
-  const [likes, setLikes] = useState(0); // Likes state
-  const [isBookmarked, setIsBookmarked] = useState(false); // Bookmark state
   const [comments, setComments] = useState([]); // Comments state
   const [newComment, setNewComment] = useState(""); // New comment input state
   const [loading, setLoading] = useState(true); // Loading state
@@ -61,21 +60,10 @@ const PostDetail = ({ user }) => {
     }
   };
 
-  // Toggle bookmark state
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
-  };
-
-  // Increase like count
-  const handleLike = () => {
-    setLikes(likes + 1);
-  };
-
-  // Show loading, error, or the post details
   if (loading)
     return (
       <div style={center}>
-        <BounceLoader color={"#000"} loading={loading} size={50} />
+        <BarLoader color={"#000"} loading={loading} size={50} />
       </div>
     );
   if (error) return <div>{error}</div>;
@@ -97,24 +85,15 @@ const PostDetail = ({ user }) => {
         <span>Reading Time: {post.readTime} min</span>
       </div>
 
-      {/* Post Content */}
       <div
         dangerouslySetInnerHTML={{ __html: post.content }}
-        className="post-content"
+        className="post-content-html"
       />
 
-      {/* Post Actions: Like and Bookmark */}
+      {/* Post Actions */}
       <div className="post-actions">
-        {/* <button className="like-button" onClick={handleLike}>
-          👍 {likes} {likes === 1 ? "Like" : "Likes"}
-        </button> */}
         <LikeButton postId={post.id} user={user} />
-        <button
-          className={`bookmark-button ${isBookmarked ? "bookmarked" : ""}`}
-          onClick={handleBookmark}
-        >
-          {isBookmarked ? "🔖 Bookmarked" : "📑 Bookmark"}
-        </button>
+        <BookmarkButton postId={post.id} user={user} />
       </div>
 
       {/* Comment Section */}

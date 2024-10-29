@@ -15,7 +15,7 @@ import PostDetail from "./components/Post/PostDetail";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { jwtDecode } from "jwt-decode";
-import { BounceLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 
 function App() {
   const [user, setUser] = useState(null); // Store user details
@@ -66,7 +66,7 @@ function App() {
   if (loading)
     return (
       <div style={center}>
-        <BounceLoader color={"#000"} loading={loading} size={50} />
+        <BarLoader color={"#000"} loading={loading} size={50} />
       </div>
     );
 

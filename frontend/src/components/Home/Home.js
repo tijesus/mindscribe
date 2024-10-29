@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import endpoints from '../../api/endPoints'; // Importing from endpoint.js
 import './Home.css';
+import { BarLoader } from "react-spinners";
 
 const Home = ({ user }) => {
     const [posts, setPosts] = useState([]);
@@ -45,10 +46,17 @@ const Home = ({ user }) => {
                 setLoading(false);
             }
         };
-
         loadPosts();
     }, [page, limit]); // Add dependencies to re-fetch on changes
 
+
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <BarLoader color={'#000'} loading={loading} size={50} />
+            </div>
+        )
+    }
     return (
         <div className="landing-page">
             <section className="hero">
@@ -63,7 +71,9 @@ const Home = ({ user }) => {
                 <h2>Featured Posts</h2>
                 <div className="posts-grid">
                     {loading ? (
-                        <p>Loading posts...</p>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <BarLoader color={'#000'} loading={loading} size={50} />
+                        </div>
                     ) : error ? (
                         <p>{error}</p>
                     ) : posts.length > 0 ? (

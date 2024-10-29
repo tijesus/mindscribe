@@ -100,4 +100,284 @@
       font-size: 0.75rem;
     }
   }
+
+  /* .post-content-html p {
+    font-size: 1.125rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .post-content-html img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .post-content-html blockquote {
+    background-color: #f5f5f5;
+    border-left: 5px solid #f0a500;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .post-content-html blockquote p {
+    margin: 0;
+  }
+
+  .post-content-html pre {
+    background-color: #e7e3e3;
+    padding: .5rem;
+    border-radius: 10px;
+    overflow-x: auto;
+  }
   
+  .post-content-html code {
+    border-radius: 5px;
+  }
+
+  .post-content-html a {
+    color: #f0a500;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .post-content-html a:hover {
+    text-decoration: underline;
+  }
+
+  .post-content-html ul {
+    margin-left: 1.5rem;
+  }
+
+  .post-content-html ol {
+    margin-left: 1.5rem;
+  }
+
+  .post-content-html li {
+    margin-bottom: .5rem;
+  }
+
+  .post-content-html hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 2rem 0;
+  } */
+
+/* Post container */
+.post-content-html {
+  /* max-width: 768px;
+  margin: 0 auto;
+  padding: 2rem; */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.7;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+
+/* Headings with impact */
+.post-content-html h1 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #000;
+  margin: 2rem 0 1.5rem;
+  position: relative;
+}
+
+.post-content-html h1::after {
+  content: '';
+  display: block;
+  width: 4rem;
+  height: 4px;
+  background: #000;
+  margin-top: 1rem;
+}
+
+.post-content-html h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  margin: 2rem 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.post-content-html h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #222;
+  margin: 1.5rem 0 1rem;
+}
+
+/* Clean paragraph styling */
+.post-content-html p {
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  color: #333;
+}
+
+/* Bold link styling */
+.post-content-html a {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 2px solid #000;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.post-content-html a:hover {
+  opacity: 0.7;
+}
+
+/* Impactful blockquotes */
+.post-content-html blockquote {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 4px solid #000;
+  background: #f8f8f8;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.post-content-html blockquote p {
+  margin: 0;
+}
+
+/* Clean list styling */
+.post-content-html ul,
+.post-content-html ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.post-content-html li {
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.post-content-html ul li {
+  list-style-type: none;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.post-content-html ul li::before {
+  content: '•';
+  position: absolute;
+  left: -1rem;
+  color: #000;
+  font-weight: bold;
+}
+
+/* Code blocks */
+.post-content-html pre {
+  background: #f3f3f3;
+  border-radius: 4px;
+  padding: .5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+/* Inline code */
+.post-content-html code {
+  border-radius: 3px;
+}
+
+/* Image styling */
+.post-content-html img {
+  max-width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  border-radius: 4px;
+}
+
+/* Table styling */
+.post-content-html table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+}
+
+.post-content-html th {
+  background: #f3f3f3;
+  padding: 1rem;
+  border-bottom: 2px solid #000;
+  text-align: left;
+  font-weight: 600;
+}
+
+.post-content-html td {
+  padding: 1rem;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+/* Clean horizontal rule */
+.post-content-html hr {
+  margin: 3rem 0;
+  border: 0;
+  height: 2px;
+  background: #000;
+  width: 100%;
+}
+
+/* Quill specific styles */
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-right {
+  text-align: right;
+}
+
+.ql-align-justify {
+  text-align: justify;
+}
+
+.ql-indent-1 {
+  padding-left: 3rem;
+}
+
+.ql-indent-2 {
+  padding-left: 6rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .post-content-html {
+    padding: 1.5rem;
+  }
+
+  .post-content-html h1 {
+    font-size: 2.2rem;
+  }
+
+  .post-content-html h2 {
+    font-size: 1.75rem;
+  }
+
+  .post-content-html h3 {
+    font-size: 1.4rem;
+  }
+
+  .post-content-html p,
+  .post-content-html li {
+    font-size: 1rem;
+  }
+}
+
+/* .post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: 768px;
+} */
+
+.post-actions {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: .5rem;
+} 

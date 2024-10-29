@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import apiEngine from '../../api/requests'; 
 import './Blog.css'; 
+import { BarLoader } from 'react-spinners';
 
 const Blog = ({ user }) => {
   const [posts, setPosts] = useState([]); // State to hold posts
@@ -46,19 +47,22 @@ const Blog = ({ user }) => {
       })
     : posts; // Show all posts when searchQuery is empty
 
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <BarLoader color={'#000'} loading={loading} size={50} />
+      </div>
+    )
+  }
+
+  if (error) {
+    return <p className='error-message'>{error}</p>
+  }
   return (
     <div className="blog-page">
-      {console.log('User:', user)} {/* Log the user for debugging */}
+      {console.log('User:', user)}
 
-      {/* Loading Indicator */}
-      {loading && <p>Loading posts...</p>} {/* Show loading text if loading is true */}
-      
-      {/* Error Message */}
-      {error && <p className="error-message">{error}</p>} {/* Display error message if present */}
-
-      {/* Search and Create Post Section */}
       <div className="top-section">
-        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search for posts..."
@@ -66,7 +70,6 @@ const Blog = ({ user }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="search-bar"
         />
-        {/* Top-right "Create Post" button, visible only if the user is logged in */}
         {user ? (
           <div className="create-post-button">
             <Link to="/create-post">Create Post</Link>
@@ -76,9 +79,8 @@ const Blog = ({ user }) => {
         )}
       </div>
 
-      {/* Display all posts or filtered posts based on search query */}
       <div className="posts-list">
-        {filteredPosts.length > 0 ? ( // Check if there are posts to display
+        {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
             <div className="post-card" key={post.id}>
               <div className="post-image-container">
@@ -106,7 +108,7 @@ const Blog = ({ user }) => {
             </div>
           ))
         ) : (
-          !loading && !error && <p className='no-post'>No posts found for your search.</p> // Show message only if not loading and no error
+          !loading && !error && <p className='no-post'>No posts found for your search.</p>
         )}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./LikeButton.css";
+import { BounceLoader } from "react-spinners";
 
 const LikeButton = ({ postId, user }) => {
   const [likes, setLikes] = useState(0);
@@ -88,7 +89,7 @@ const LikeButton = ({ postId, user }) => {
     return (
       <div className="like-button">
         <button className="like-btn" disabled>
-          Loading...
+          <BounceLoader size='15'/>
         </button>
       </div>
     );
