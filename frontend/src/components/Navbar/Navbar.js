@@ -62,7 +62,7 @@ const Navbar = ({ user, onLogout }) => {
                 alt={user.username}
                 className="user-photo"
               />
-              <span>{user.username}</span>
+              <span class='username-container'>{user.username}</span>
               <button onClick={handleLogout} className="logout-button">
                 Logout
               </button>
