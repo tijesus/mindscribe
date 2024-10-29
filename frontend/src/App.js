@@ -24,7 +24,7 @@ function App() {
 
     if (token) {
       axios
-      .get('https://mindscribe.praiseafk.tech/auth/profile', {
+      .get('https://mindscribe.praiseafk.tech/auth/', {
         headers: { Authorization: `Bearer ${token}` }, // Fixed interpolation
       })
       .then((response) => {
