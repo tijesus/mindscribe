@@ -3,7 +3,7 @@ import axios from 'axios';
 import endpoints from '../../api/endPoints'; // Importing from endpoint.js
 import './Home.css';
 
-const Home = () => {
+const Home = ({ user }) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -81,11 +81,11 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="cta">
+            {!user ? <section className="cta">
                 <h2>Join the Community</h2>
                 <p>Sign up today to receive the latest updates, tutorials, and tips directly in your inbox!</p>
                 <a href="/signup" className="cta-button">Sign Up</a>
-            </section>
+            </section> : ''}
         </div>
     );
 };
