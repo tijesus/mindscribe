@@ -14,31 +14,30 @@ import Login from './components/Login/Login';
 import PostDetail from './components/Post/PostDetail';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
+import endpoints from '../src/api/endPoints';
+import Profile from './components/Profile/Profile'; 
 
 function App() {
   const [user, setUser] = useState(null); // Store user details
   const [loading, setLoading] = useState(true); // Track loading state
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token'); // Retrieve the token
-
+    const token = localStorage.getItem('access_token');
+  
     if (token) {
       axios
-      .get('https://mindscribe.praiseafk.tech/auth/', {
-        headers: { Authorization: `Bearer ${token}` }, // Fixed interpolation
-      })
-      .then((response) => {
-        const { user } = response;
-        setUser(user);
-      })
-      .catch((error) => {
-        console.error('Error fetching user profile:', error);
-        handleLogout();
-      })
-      .finally(() => setLoading(false));
-    
+        .get(endpoints.AUTH_ENDPOINTS.LOGIN, { headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+          const { user } = response; // Ensure you access the right object
+          setUser(user);
+        })
+        .catch((error) => {
+          console.error('Error fetching user profile:', error);
+          handleLogout(); // Trigger logout only on authentication errors
+        })
+        .finally(() => setLoading(false));
     } else {
-      setLoading(false); // Stop loading if no token is found
+      setLoading(false);
     }
   }, []);
 
@@ -58,7 +57,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar user={user} onLogout={handleLogout} /> {/* Pass user data */}
+        <Navbar user={user} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<Blog user={user} />} />
@@ -67,9 +66,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} /> {/* Handle login */}
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/profile" element={<Profile />} /> {/* Add profile route */}
         </Routes>
         <Footer />
       </div>

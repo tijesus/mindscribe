@@ -37,12 +37,14 @@ const Navbar = ({ user, onLogout }) => {
         <div className="nav-right">
           {user ? (
             <div className="user-info">
-              <img 
-                src={user.avatarUrl} // Use avatarUrl instead of photo
-                alt={user.username} 
-                className="user-photo" 
-              />
-              <span>{user.username}</span>
+              {/* <Link to="/profile"> */}
+                <img 
+                  src={user.avatarUrl} // Use avatarUrl instead of photo
+                  alt={user.username} 
+                  className="user-photo" 
+                />
+                <span>{user.username}</span>
+              {/* </Link> */}
               <button onClick={handleLogout} className="logout-button">
                 Logout
               </button>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import endpoints from '../../api/endPoints'; // Importing from endpoint.js
 import './Home.css';
 
@@ -55,7 +56,7 @@ const Home = () => {
                 <div className="hero-content" style={{ display:'contents' }}>
                     <h1>Welcome to Mindscribe</h1>
                     <p>Explore amazing articles, tutorials, and guides!</p>
-                    <a href="/posts" className="cta-button">Explore Posts</a>
+                    <Link to="/posts" className="cta-button">Explore Posts</Link> {/* Change to Link */}
                 </div>
             </section>
 
@@ -72,7 +73,7 @@ const Home = () => {
                                 <img src={post.bannerUrl} alt={post.title} className="post-image" />
                                 <h3>{post.title}</h3>
                                 <p>{post.content.slice(0, 100)}...</p>
-                                <a href={`/posts/${post.id}`} className="read-more">Read More</a>
+                                <Link to={`/posts/${post.id}`} className="read-more">Read More</Link> {/* Change to Link */}
                             </div>
                         ))
                     ) : (
@@ -84,7 +85,7 @@ const Home = () => {
             <section className="cta">
                 <h2>Join the Community</h2>
                 <p>Sign up today to receive the latest updates, tutorials, and tips directly in your inbox!</p>
-                <a href="/signup" className="cta-button">Sign Up</a>
+                <Link to="/signup" className="cta-button">Sign Up</Link> {/* Change to Link */}
             </section>
         </div>
     );
