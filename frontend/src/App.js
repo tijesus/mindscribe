@@ -14,29 +14,39 @@ import Login from "./components/Login/Login";
 import PostDetail from "./components/Post/PostDetail";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import { jwtDecode } from "jwt-decode";
+import { BounceLoader } from "react-spinners";
 
 function App() {
   const [user, setUser] = useState(null); // Store user details
   const [loading, setLoading] = useState(true); // Track loading state
 
+  const center = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("access_token"); // Retrieve the token
+    let userId;
+    if (token) userId = jwtDecode(token).id;
 
     if (token) {
       axios
-      .get('https://mindscribe.praiseafk.tech/auth/', {
-        headers: { Authorization: `Bearer ${token}` }, // Fixed interpolation
-      })
-      .then((response) => {
-        const { user } = response;
-        setUser(user);
-      })
-      .catch((error) => {
-        console.error('Error fetching user profile:', error);
-        handleLogout();
-      })
-      .finally(() => setLoading(false));
-
+        .get(`https://mindscribe.praiseafk.tech/users/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` }, // Fixed interpolation
+        })
+        .then((response) => {
+          const user = response.data;
+          setUser(user);
+        })
+        .catch((error) => {
+          console.error("Error fetching user profile:", error);
+          handleLogout();
+        })
+        .finally(() => setLoading(false));
     } else {
       setLoading(false); // Stop loading if no token is found
     }
@@ -53,7 +63,12 @@ function App() {
     setUser(null); // Clear user state
   };
 
-  if (loading) return <div>Loading...</div>; // Loading indicator
+  if (loading)
+    return (
+      <div style={center}>
+        <BounceLoader color={"#000"} loading={loading} size={50} />
+      </div>
+    );
 
   return (
     <Router>
@@ -62,7 +77,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home user={user} />} />
           <Route path="/posts" element={<Blog user={user} />} />
-          <Route path="/posts/:id" element={<PostDetail />} />
+          <Route path="/posts/:id" element={<PostDetail user={user} />} />
           <Route path="/create-post" element={<CreatePost user={user} />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

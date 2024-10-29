@@ -652,7 +652,7 @@ export class PostController {
   @Delete(':postId/bookmarks')
   async removeBookmark(@Param('postId') postId: string, @Req() req: Request) {
     const userId = (req.user as any).id;
-    return await this.postService.removeBookmark(postId, userId);
+    return await this.postService.removeBookmark(userId, postId);
   }
 
   @ApiBearerAuth()
