@@ -66,7 +66,7 @@
 .user-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;  /* Space between username and profile picture */
+  gap: 1.5rem;  /* Space between username and profile picture */
 }
 
 .user-info img {
@@ -99,4 +99,36 @@
 .nav-right a:hover {
   text-decoration: underline;
   color: #ddd;
+}
+
+.username-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 16px;
+  background-color: #4a90e2; /* Primary button color */
+  color: #ffffff; /* Button text color */
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+/* Hover effect */
+.username-container:hover {
+  background-color: #3b78c0; /* Slightly darker shade for hover */
+  transform: scale(1.05);
+}
+
+/* Focus effect for accessibility */
+.username-container:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Active state for click feedback */
+.username-container:active {
+  transform: scale(0.95);
 }

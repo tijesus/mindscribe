@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import endpoints from '../../api/endPoints'; // Importing from endpoint.js
 import './Home.css';
+import { BarLoader } from "react-spinners";
 
 const Home = ({ user }) => {
     const [posts, setPosts] = useState([]);
@@ -46,17 +46,24 @@ const Home = ({ user }) => {
                 setLoading(false);
             }
         };
-
         loadPosts();
     }, [page, limit]); // Add dependencies to re-fetch on changes
 
+
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <BarLoader color={'#000'} loading={loading} size={50} />
+            </div>
+        )
+    }
     return (
         <div className="landing-page">
             <section className="hero">
                 <div className="hero-content" style={{ display:'contents' }}>
                     <h1>Welcome to Mindscribe</h1>
                     <p>Explore amazing articles, tutorials, and guides!</p>
-                    <Link to="/posts" className="cta-button">Explore Posts</Link> {/* Change to Link */}
+                    <a href="/posts" className="cta-button">Explore Posts</a>
                 </div>
             </section>
 
@@ -64,7 +71,9 @@ const Home = ({ user }) => {
                 <h2>Featured Posts</h2>
                 <div className="posts-grid">
                     {loading ? (
-                        <p>Loading posts...</p>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <BarLoader color={'#000'} loading={loading} size={50} />
+                        </div>
                     ) : error ? (
                         <p>{error}</p>
                     ) : posts.length > 0 ? (
@@ -73,7 +82,7 @@ const Home = ({ user }) => {
                                 <img src={post.bannerUrl} alt={post.title} className="post-image" />
                                 <h3>{post.title}</h3>
                                 <p>{post.content.slice(0, 100)}...</p>
-                                <Link to={`/posts/${post.id}`} className="read-more">Read More</Link> {/* Change to Link */}
+                                <a href={`/posts/${post.id}`} className="read-more">Read More</a>
                             </div>
                         ))
                     ) : (
@@ -86,7 +95,7 @@ const Home = ({ user }) => {
                 <h2>Join the Community</h2>
                 <p>Sign up today to receive the latest updates, tutorials, and tips directly in your inbox!</p>
                 <a href="/signup" className="cta-button">Sign Up</a>
-            </section>
+            </section> : ''}
         </div>
     );
 };

@@ -2,8 +2,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import apiEngine from "../../api/requests"; // Import your API engine
-import endpoints from "../../api/endPoints"; // Import your API endpoints
 
 const Navbar = ({ user, onLogout }) => {
   const handleLogout = async () => {
@@ -57,12 +55,12 @@ const Navbar = ({ user, onLogout }) => {
         <div className="nav-right">
           {user ? (
             <div className="user-info">
-              <img 
+              <img
                 src={user.avatarUrl} // Use avatarUrl instead of photo
-                alt={user.username} 
-                className="user-photo" 
+                alt={user.username}
+                className="user-photo"
               />
-              <span>{user.username}</span>
+              <span class='username-container'>{user.username}</span>
               <button onClick={handleLogout} className="logout-button">
                 Logout
               </button>
