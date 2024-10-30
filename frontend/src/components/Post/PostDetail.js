@@ -7,6 +7,7 @@ import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import LikeButton from "./LikeButton.js";
 import BookmarkButton from "./BookmarkButton.js";
+import CommentButton from "./CommentButton"; // Import your CommentButton component
 
 const center = {
   display: "flex",
@@ -15,12 +16,10 @@ const center = {
   height: "100vh",
 };
 
-
 const PostDetail = ({ user }) => {
   const { id } = useParams(); // Get post ID from URL
   const [post, setPost] = useState(null); // Post state
   const [comments, setComments] = useState([]); // Comments state
-  const [newComment, setNewComment] = useState(""); // New comment input state
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
@@ -38,8 +37,24 @@ const PostDetail = ({ user }) => {
         setLoading(false); // Stop loading spinner
       }
     };
-    
+
     fetchPost();
+  }, [id]);
+
+  // Fetch comments associated with the post
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await axiosInstance.get(`/posts/${id}/comments`);
+        console.log("Fetched comments:", response.data); // Log the response for debugging
+        setComments(response.data); // Set the comments data
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        setError("Failed to load comments."); // Set error message
+      }
+    };
+
+    fetchComments();
   }, [id]);
 
   useEffect(() => {
@@ -49,16 +64,6 @@ const PostDetail = ({ user }) => {
       });
     }
   }, [post]);
-
-
-  // Handle new comment submission
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      setComments([...comments, newComment]);
-      setNewComment(""); // Clear the comment input
-    }
-  };
 
   if (loading)
     return (
@@ -97,29 +102,7 @@ const PostDetail = ({ user }) => {
       </div>
 
       {/* Comment Section */}
-      <div className="comment-section">
-        <h3>Comments ({comments.length})</h3>
-        <form onSubmit={handleCommentSubmit} className="comment-form">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
-            className="comment-input"
-          />
-          <button type="submit" className="comment-submit">
-            Submit
-          </button>
-        </form>
-
-        {/* Display Comments */}
-        <ul className="comments-list">
-          {comments.map((comment, index) => (
-            <li key={index} className="comment-item">
-              {comment}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <CommentButton postId={id} user={user} comments={comments} />
     </div>
   );
 };
