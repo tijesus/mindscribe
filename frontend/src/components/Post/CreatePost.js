@@ -9,7 +9,21 @@ import endpoints from "../../api/endPoints";
 import "./CreatePost.css";
 
 hljs.configure({
-  languages: ["javascript", "python", "html", "css", 'c', 'cpp', 'java', 'ruby', 'php', 'perl', 'bash', 'json', 'sql'],
+  languages: [
+    "javascript",
+    "python",
+    "html",
+    "css",
+    "c",
+    "cpp",
+    "java",
+    "ruby",
+    "php",
+    "perl",
+    "bash",
+    "json",
+    "sql",
+  ],
 });
 
 const Font = ReactQuill.Quill.import("formats/font");
@@ -24,6 +38,31 @@ Font.whitelist = [
 ];
 ReactQuill.Quill.register(Font, true);
 
+// Create a custom blot for HTML content
+const Quill = ReactQuill.Quill;
+const BlockEmbed = Quill.import("blots/block/embed");
+
+class ImageBlot extends BlockEmbed {
+  static create(value) {
+    const node = super.create();
+    node.setAttribute("contenteditable", false);
+    node.setAttribute("src", value.url);
+    node.setAttribute("alt", value.alt || "");
+    node.setAttribute("class", "inserted-image");
+    return node;
+  }
+
+  static value(node) {
+    return {
+      url: node.getAttribute("src"),
+      alt: node.getAttribute("alt"),
+    };
+  }
+}
+ImageBlot.blotName = "customImage";
+ImageBlot.tagName = "img";
+Quill.register(ImageBlot);
+
 const modules = {
   toolbar: {
     container: [
@@ -33,7 +72,7 @@ const modules = {
       [{ color: [] }, { background: [] }],
       ["blockquote", "code-block"],
       [{ list: "ordered" }, { list: "bullet" }],
-      ["link"],
+      ["link", "image"],
       ["clean"],
     ],
   },
@@ -58,6 +97,7 @@ const formats = [
   "bullet",
   "link",
   "image",
+  "customImage", // Add the new format
 ];
 
 const CreatePost = ({ user }) => {
@@ -68,7 +108,7 @@ const CreatePost = ({ user }) => {
   const quillRef = useRef(null);
   const navigate = useNavigate();
 
-  const imageHandler = useCallback(async () => {
+  const imageHandler = useCallback(() => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
@@ -80,6 +120,7 @@ const CreatePost = ({ user }) => {
         try {
           const formData = new FormData();
           formData.append("file", file);
+
           const response = await axios.post(
             `${endpoints.POSTS_ENDPOINTS.UPLOAD_MEDIA}`,
             formData,
@@ -90,18 +131,31 @@ const CreatePost = ({ user }) => {
               },
             }
           );
-          const imageUrl = response.data.fileUrl;
-          const quill = quillRef.current?.getEditor();
-          const range = quill?.getSelection();
-          if (range) {
-            quill?.insertEmbed(range.index, "image", imageUrl);
+
+          const imageUrl = response.data.url;
+          const quill = quillRef.current.getEditor();
+          const range = quill.getSelection(true);
+
+          // Insert a new line before the image if we're not at the start
+          if (range.index > 0) {
+            quill.insertText(range.index, "\n");
           }
+
+          // Insert the custom image blot
+          quill.insertEmbed(range.index, "customImage", {
+            url: imageUrl,
+            alt: file.name,
+          });
+
+          // Move cursor to next line
+          quill.insertText(range.index + 1, "\n");
+          quill.setSelection(range.index + 2, 0);
         } catch (error) {
           console.error("Image upload failed:", error);
-          setError("Failed to upload image.");
+          setError("Failed to upload image. Please try again.");
         }
       } else {
-        setError("Image size exceeds 5MB.");
+        setError("Image size exceeds 5MB limit.");
       }
     };
   }, []);
@@ -109,7 +163,8 @@ const CreatePost = ({ user }) => {
   useEffect(() => {
     const quill = quillRef.current?.getEditor();
     if (quill) {
-      quill.getModule("toolbar").addHandler("image", imageHandler);
+      const toolbar = quill.getModule("toolbar");
+      toolbar.addHandler("image", imageHandler);
     }
   }, [imageHandler]);
 
@@ -200,7 +255,9 @@ const CreatePost = ({ user }) => {
           placeholder="Write your post content..."
         />
 
-        <button type="submit" className="submit-post">Create Post</button>
+        <button type="submit" className="submit-post">
+          Create Post
+        </button>
       </form>
     </div>
   );
