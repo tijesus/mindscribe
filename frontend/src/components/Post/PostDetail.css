@@ -504,3 +504,9 @@
   color: #555;
 }
 
+img.inserted-image {
+  max-width: 100%;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+

@@ -52,6 +52,7 @@ const Navbar = ({ user, onLogout }) => {
           <Link to="/contact" className="contact-link">
             Contact
           </Link>
+          {user ? <Link to="/posts/my_posts">My Posts</Link> : null}
         </div>
 
         <div className="nav-right">
@@ -62,7 +63,7 @@ const Navbar = ({ user, onLogout }) => {
                 alt={user.username}
                 className="user-photo"
               />
-              <span class='username-container'>{user.username}</span>
+              <span class="username-container">{user.username}</span>
               <button onClick={handleLogout} className="logout-button">
                 Logout
               </button>

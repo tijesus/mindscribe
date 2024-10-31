@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
@@ -16,11 +15,13 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { jwtDecode } from "jwt-decode";
 import { BarLoader } from "react-spinners";
-import "./App.css"; // Import your CSS file
+import "./App.css";
+import MyPosts from "./components/Blog/MyPosts";
+import EditPost from "./components/Post/EditPostComponent";
 
 function App() {
-  const [user, setUser] = useState(null); // Store user details
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const center = {
     display: "flex",
@@ -30,7 +31,7 @@ function App() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token"); // Retrieve the token
+    const token = localStorage.getItem("access_token");
     let userId;
     if (token) userId = jwtDecode(token).id;
 
@@ -49,7 +50,7 @@ function App() {
         })
         .finally(() => setLoading(false));
     } else {
-      setLoading(false); // Stop loading if no token is found
+      setLoading(false);
     }
   }, []);
 
@@ -64,21 +65,22 @@ function App() {
     setUser(null);
   };
 
-  if (loading)
+  if (loading) {
     return (
       <div style={center}>
         <BarLoader color={"#000"} loading={loading} size={50} />
       </div>
     );
+  }
 
   return (
     <Router>
       <div className="wrapper">
-        {" "}
-        {/* Wrapper for layout management */}
         <Navbar user={user} onLogout={handleLogout} />
         <main className="main-content">
           <Routes>
+            <Route path="/posts/my_posts" element={<MyPosts user={user} />} />
+            <Route path="/posts/:id/edit" element={<EditPost user={user} />} />
             <Route path="/" element={<Home user={user} />} />
             <Route path="/posts" element={<Blog user={user} />} />
             <Route path="/posts/:id" element={<PostDetail user={user} />} />

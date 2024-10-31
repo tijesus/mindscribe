@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import apiEngine from "../../api/requests";
-import "./Blog.css";
 import { BarLoader, ClipLoader } from "react-spinners";
 
-const Blog = ({ user }) => {
+const MyPosts = ({ user }) => {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -27,14 +26,20 @@ const Blog = ({ user }) => {
     };
   };
 
-  const fetchPosts = useCallback(
+  const fetchMyPosts = useCallback(
     async (pageNum, query = "") => {
+      if (!user) {
+        setError("Please log in to view your posts.");
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       const controller = new AbortController();
       const { signal } = controller;
 
       try {
-        const url = new URL("https://mindscribe.praiseafk.tech/posts/");
+        const url = new URL("https://mindscribe.praiseafk.tech/posts/my_post");
         url.searchParams.append("page", pageNum);
         url.searchParams.append("limit", pagination.limit);
         if (query) {
@@ -62,24 +67,61 @@ const Blog = ({ user }) => {
           console.log("Fetch aborted");
         } else {
           console.error("Error fetching posts:", error);
-          setError("Failed to load posts. Please try again later.");
+          setError("Failed to load your posts. Please try again later.");
         }
       } finally {
         setLoading(false);
       }
 
-      // Cleanup function to cancel ongoing fetch
       return () => controller.abort();
     },
-    [pagination.limit]
+    [pagination.limit, user]
   );
+
+ const deletePost = useCallback(
+   async (postId) => {
+     if (!user) {
+       setError("Please log in to delete your posts.");
+       return;
+     }
+
+     try {
+       setLoading(true);
+
+       const response = await fetch(
+         `https://mindscribe.praiseafk.tech/posts/${postId}`,
+         {
+           method: "DELETE",
+           headers: {
+             "Content-Type": "application/json",
+             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+           },
+         }
+       );
+
+       if (!response.ok) {
+         throw new Error("Failed to delete the post.");
+       }
+
+       // Remove the deleted post from the state
+       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+     } catch (error) {
+       console.error("Error deleting post:", error);
+       setError("Failed to delete the post. Please try again later.");
+     } finally {
+       setLoading(false);
+     }
+   },
+   [user]
+ );
+
 
   const debouncedSearch = useCallback(
     debounce((query) => {
       setPagination((prev) => ({ ...prev, page: 1 }));
-      fetchPosts(1, query);
-    }, 500), // Set debounce to 500ms
-    [fetchPosts]
+      fetchMyPosts(1, query);
+    }, 500),
+    [fetchMyPosts]
   );
 
   const handleSearchChange = useCallback(
@@ -94,14 +136,25 @@ const Blog = ({ user }) => {
   const handlePageChange = useCallback(
     (newPage) => {
       setPagination((prev) => ({ ...prev, page: newPage }));
-      fetchPosts(newPage, searchQuery);
+      fetchMyPosts(newPage, searchQuery);
     },
-    [fetchPosts, searchQuery]
+    [fetchMyPosts, searchQuery]
   );
 
   useEffect(() => {
-    fetchPosts(1);
-  }, [fetchPosts]);
+    fetchMyPosts(1);
+  }, [fetchMyPosts]);
+
+  if (!user) {
+    return (
+      <div className="error-message">
+        <p>Please log in to view your posts.</p>
+        <Link to="/login" className="login-link">
+          Go to Login
+        </Link>
+      </div>
+    );
+  }
 
   if (loading && posts.length === 0) {
     return (
@@ -118,23 +171,22 @@ const Blog = ({ user }) => {
   return (
     <div className="blog-page">
       <div className="top-section">
+        <h1 className="page-title">My Posts</h1>
         <div className="search-section">
           <input
             type="text"
-            placeholder="Search for posts..."
+            placeholder="Search in your posts..."
             value={searchQuery}
             onChange={handleSearchChange}
             className="search-bar"
           />
           {loading && <ClipLoader size={20} />}
         </div>
-        {user ? (
-          <div className="create-post-button">
-            <Link to="/create-post">Create Post</Link>
-          </div>
-        ) : (
-          <p>Please log in to create a post.</p>
-        )}
+        <div className="create-post-button">
+          <Link to="/create-post" className="read-more-button">
+            Create New Post
+          </Link>
+        </div>
       </div>
 
       <div className="posts-list">
@@ -152,18 +204,6 @@ const Blog = ({ user }) => {
                 <div className="post-content">
                   <h2>{post.title}</h2>
                   <div className="post-meta">
-                    <div className="author-info">
-                      {post.author?.avatarUrl && (
-                        <img
-                          src={post.author.avatarUrl}
-                          alt={post.author.username}
-                          className="author-pic"
-                        />
-                      )}
-                      <span className="author-name">
-                        {post.author.firstname} {post.author.lastname}
-                      </span>
-                    </div>
                     <span className="published-date">
                       Published: {new Date(post.createdAt).toLocaleDateString()}
                     </span>
@@ -172,16 +212,31 @@ const Blog = ({ user }) => {
                     </span>
                     <span className="post-stats">
                       {post._count.comments === 1
-                        ? `1 comment`
-                        : `${post._count.comments} comments`} {" "}
-                      | {post._count.likes === 1 ? `1 like` : `${post._count.likes} likes`}
+                        ? "1 comment"
+                        : `${post._count.comments} comments`}{" "}
+                      |{" "}
+                      {post._count.likes === 1
+                        ? "1 like"
+                        : `${post._count.likes} likes`}
                     </span>
                   </div>
 
                   <div className="post-actions">
                     <Link to={`/posts/${post.id}`} className="read-more-button">
-                      Read
+                      View
                     </Link>
+                    <Link
+                      to={`/posts/${post.id}/edit`}
+                      className="read-more-button"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => deletePost(post.id)}
+                      className="delete-button"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -189,7 +244,12 @@ const Blog = ({ user }) => {
           </>
         ) : (
           !loading && (
-            <p className="no-posts">No posts found for your search.</p>
+            <div className="no-posts">
+              <p>No posts found.</p>
+              <Link to="/create-post" className="create-first-post-button">
+                Create Your First Post
+              </Link>
+            </div>
           )
         )}
       </div>
@@ -244,4 +304,4 @@ const Blog = ({ user }) => {
   );
 };
 
-export default Blog;
+export default MyPosts;
