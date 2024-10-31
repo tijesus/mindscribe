@@ -272,7 +272,6 @@
 
 /* Code blocks */
 .post-content-html pre {
-  background: #f3f3f3;
   border-radius: 4px;
   padding: .5rem;
   overflow-x: auto;
@@ -381,3 +380,127 @@
   align-items: center;
   gap: .5rem;
 } 
+
+/* PostDetail.css */
+
+.comment-section {
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.comment-section h3 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  resize: vertical;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
+}
+
+.comment-input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.comment-submit {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.comment-submit:hover {
+  background-color: #0056b3;
+}
+
+.comment-error {
+  color: #d9534f;
+  background: #f9e9e9;
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  background: #f7f7f7;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.comment-item strong {
+  display: block;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.comment-date {
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 5px;
+  display: block;
+}
+
+/* PostDetail.css */
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.pagination-info {
+  font-size: 0.9em;
+  color: #555;
+}
+

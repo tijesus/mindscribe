@@ -16,6 +16,7 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { jwtDecode } from "jwt-decode";
 import { BarLoader } from "react-spinners";
+import "./App.css"; // Import your CSS file
 
 function App() {
   const [user, setUser] = useState(null); // Store user details
@@ -36,7 +37,7 @@ function App() {
     if (token) {
       axios
         .get(`https://mindscribe.praiseafk.tech/users/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` }, // Fixed interpolation
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           const user = response.data;
@@ -53,14 +54,14 @@ function App() {
   }, []);
 
   const handleLogin = (data) => {
-    const { accessToken, user } = data; // Extract accessToken and user
-    localStorage.setItem("access_token", accessToken); // Store the token
-    setUser(user); // Store user data in state
+    const { accessToken, user } = data;
+    localStorage.setItem("access_token", accessToken);
+    setUser(user);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token"); // Clear token
-    setUser(null); // Clear user state
+    localStorage.removeItem("access_token");
+    setUser(null);
   };
 
   if (loading)
@@ -72,21 +73,24 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Navbar user={user} onLogout={handleLogout} /> {/* Pass user data */}
-        <Routes>
-          <Route path="/" element={<Home user={user} />} />
-          <Route path="/posts" element={<Blog user={user} />} />
-          <Route path="/posts/:id" element={<PostDetail user={user} />} />
-          <Route path="/create-post" element={<CreatePost user={user} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />{" "}
-          {/* Handle login */}
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-        </Routes>
+      <div className="wrapper">
+        {" "}
+        {/* Wrapper for layout management */}
+        <Navbar user={user} onLogout={handleLogout} />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route path="/posts" element={<Blog user={user} />} />
+            <Route path="/posts/:id" element={<PostDetail user={user} />} />
+            <Route path="/create-post" element={<CreatePost user={user} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Routes>
+        </main>
         <Footer />
       </div>
     </Router>

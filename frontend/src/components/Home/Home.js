@@ -81,7 +81,7 @@ const Home = ({ user }) => {
                             <div key={post.id} className="post-card">
                                 <img src={post.bannerUrl} alt={post.title} className="post-image" />
                                 <h3>{post.title}</h3>
-                                <p>{post.content.slice(0, 100)}...</p>
+                                {/* <p>{post.content.slice(0, 100)}...</p> */}
                                 <a href={`/posts/${post.id}`} className="read-more">Read More</a>
                             </div>
                         ))

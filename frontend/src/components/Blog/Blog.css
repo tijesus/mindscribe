@@ -1,170 +1,233 @@
-/* Blog Page Styles */
+/* Blog.css */
+
 .blog-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative; /* Needed for positioning the button and search bar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Top section for search and create post button */
 .top-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* Search Bar Styling */
+.search-section {
+    flex: 1;
+    max-width: 600px;
+    display: flex;
+}
+
 .search-bar {
-  flex-grow: 1;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  max-width: 600px;
-  margin-right: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+    transition: border-color 0.3s;
 }
 
 .search-bar:focus {
-  border-color: #007bff;
-  outline: none;
+    outline: none;
+    border-color: #007bff;
 }
 
-/* Create Post Button Styling */
 .create-post-button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.create-post-button a {
-  color: #fff;
-  text-decoration: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 .create-post-button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
-/* Post List and Card Styles */
 .posts-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive 3-column layout */
-  gap: 20px;
+    width: 100%;
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 20px; /* Space between cards */
+    margin-top: 20px; /* Space above cards */
 }
 
 .post-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .post-image-container {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
+    width: 100%;
 }
 
 .post-image {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .post-content {
-  padding: 10px;
+    padding: 15px;
+}
+
+h2 {
+    font-size: 20px; /* Adjusted font size for better readability */
+    margin: 10px 0;
 }
 
 .post-meta {
-  font-size: 14px;
-  color: #666;
-  display: inline-block;
-  justify-content: space-between;
-}
-.post-meta .post-timestamp {
-  margin-left: 65px;
-  margin-top: -12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 10px;
 }
 
 .author-info {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .author-pic {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin-right: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
 }
 
 .post-actions {
-  margin-top: 10px;
+    margin-top: 15px;
 }
 
 .read-more-button {
-  display: inline-block;
-  background-color: #007bff;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 4px;
-  text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
 .read-more-button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
-/* Styles for "No posts found" message */
-p {
-  color: #666;
-  font-size: 16px;
-  margin-top: 20px;
+.pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
 }
 
 .pagination-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
-.pagination-controls button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.pagination-button,
+.page-number {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.pagination-controls button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.pagination-button:disabled {
+    cursor: not-allowed;
+    background-color: #e9ecef;
+    color: #6c757d;
 }
 
-.pagination-controls span {
-  font-size: 16px;
-  font-weight: bold;
+.page-number.active {
+    background-color: #007bff;
+    color: white;
 }
 
-.pagination-controls select {
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 16px;
-  margin-left: 10px;
+.page-number:hover {
+    background-color: #e2e6ea;
 }
+
+.pagination-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.no-posts {
+    font-size: 18px;
+    color: #6c757d;
+    margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Blog.css */
+
+/* Other styles remain unchanged... */
+
+/* Blog.css */
+
+/* Other styles remain unchanged... */
+
+.post-meta {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start (left) */
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.author-info {
+    display: flex; /* This keeps the author picture and name in line */
+    align-items: center;
+}
+
+.author-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.author-name {
+    font-weight: bold; /* Make the author’s name bold */
+}
+
+/* Additional styles for spacing */
+.published-date, .reading-time, .post-stats {
+    margin-top: 5px; /* Space between stacked items */
+}
+
+/* You can add hover effects or other styles as needed */
+
