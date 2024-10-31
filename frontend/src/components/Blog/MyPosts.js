@@ -46,7 +46,15 @@ const MyPosts = ({ user }) => {
           url.searchParams.append("q", query);
         }
 
-        const response = await apiEngine.get(url.toString(), { signal });
+        const response = await apiEngine.get(
+          url.toString(),
+          { signal },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
 
         if (response.data && response.meta) {
           setPosts(response.data);
@@ -78,43 +86,42 @@ const MyPosts = ({ user }) => {
     [pagination.limit, user]
   );
 
- const deletePost = useCallback(
-   async (postId) => {
-     if (!user) {
-       setError("Please log in to delete your posts.");
-       return;
-     }
+  const deletePost = useCallback(
+    async (postId) => {
+      if (!user) {
+        setError("Please log in to delete your posts.");
+        return;
+      }
 
-     try {
-       setLoading(true);
+      try {
+        setLoading(true);
 
-       const response = await fetch(
-         `https://mindscribe.praiseafk.tech/posts/${postId}`,
-         {
-           method: "DELETE",
-           headers: {
-             "Content-Type": "application/json",
-             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-           },
-         }
-       );
+        const response = await fetch(
+          `https://mindscribe.praiseafk.tech/posts/${postId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
 
-       if (!response.ok) {
-         throw new Error("Failed to delete the post.");
-       }
+        if (!response.ok) {
+          throw new Error("Failed to delete the post.");
+        }
 
-       // Remove the deleted post from the state
-       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-     } catch (error) {
-       console.error("Error deleting post:", error);
-       setError("Failed to delete the post. Please try again later.");
-     } finally {
-       setLoading(false);
-     }
-   },
-   [user]
- );
-
+        // Remove the deleted post from the state
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      } catch (error) {
+        console.error("Error deleting post:", error);
+        setError("Failed to delete the post. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [user]
+  );
 
   const debouncedSearch = useCallback(
     debounce((query) => {
@@ -169,7 +176,7 @@ const MyPosts = ({ user }) => {
   }
 
   return (
-    <div className="blog-page">
+    <div className="blog-page my-blog">
       <div className="top-section">
         <h1 className="page-title">My Posts</h1>
         <div className="search-section">
@@ -233,7 +240,7 @@ const MyPosts = ({ user }) => {
                     </Link>
                     <button
                       onClick={() => deletePost(post.id)}
-                      className="delete-button"
+                      className="read-more-button"
                     >
                       Delete
                     </button>

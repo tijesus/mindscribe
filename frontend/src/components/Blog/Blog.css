@@ -231,3 +231,6 @@ h2 {
 
 /* You can add hover effects or other styles as needed */
 
+.my-blog {
+    min-width: 1000px;
+}
