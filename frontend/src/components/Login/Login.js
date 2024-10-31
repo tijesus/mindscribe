@@ -40,6 +40,11 @@ const Login = ({ onLogin }) => {
         console.log(response); // Log or use the response data
       } else {
         console.error('Login failed:', $response.status); // Handle errors
+        if ($response.status === 401) {
+          throw new Error('Invalid credentials. Please try again.');
+        } else {
+          throw new Error('An unexpected error occurred. Please try again.');
+        }
       }
 
       console.log('Full API Response:', response); // Log the entire response
@@ -48,8 +53,8 @@ const Login = ({ onLogin }) => {
       const { user, accessToken } = response || {}; // Safely access the data object
   
       if (!user || !accessToken) {
-        // console.log(data)
-        throw new Error('Unexpected API response structure');
+        console.log('Unexpected API response structure:', response);
+        throw new Error('Something went wrong. Please try again.');
       }
   
       onLogin({ accessToken, user });
